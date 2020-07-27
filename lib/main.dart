@@ -14,8 +14,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    FirebaseRepository _firebaseRepository = FirebaseRepository();
+    FirebaseMethod _firebaseRepository = FirebaseMethod();
     return MaterialApp(
+      title: "FluSkipe",
+      debugShowCheckedModeBanner: false,
       home: FutureBuilder(
         future: _firebaseRepository.getCurrentUser(),
         builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {

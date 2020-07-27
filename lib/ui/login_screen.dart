@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skype_clone/resources/firebase_method.dart';
 import 'package:flutter_skype_clone/ui/home_screen.dart';
-
-final FirebaseRepository _firebaseRepository = FirebaseRepository();
+import 'package:flutter_skype_clone/utils/universal_var.dart';
+import 'package:shimmer/shimmer.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,25 +11,56 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseMethod _firebaseRepository = FirebaseMethod();
+  bool isLogInPressed = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: loginButton(),
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: loginButton(),
+          ),
+          isLogInPressed
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Container(),
+        ],
       ),
+      backgroundColor: Colors.black38,
     );
   }
 
   Widget loginButton() {
-    return RaisedButton(
-      child: Text("Log In"),
-      onPressed: () {
-        performLogin();
-      },
+    return Shimmer.fromColors(
+      baseColor: Colors.white60,
+      highlightColor: Colors.black38,
+      child: FlatButton(
+        padding: EdgeInsets.all(20.0),
+        child: Text(
+          "LogIn",
+          style: TextStyle(
+            color: Colors.black38,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 0.1,
+            wordSpacing: .01,
+            fontSize: 30.0,
+          ),
+        ),
+        onPressed: () {
+          performLogin();
+        },
+      ),
     );
   }
 
   void performLogin() {
+    setState(() {
+      // the loading screen shows up
+      isLogInPressed = true;
+    });
     _firebaseRepository.signIn().then((FirebaseUser user) {
       if (user != null) {
         authenticateUser(user);
@@ -46,6 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _firebaseRepository.authenticateUser(user).then(
       (isNewUser) {
+        setState(() {
+          // as authinticated loading screen turns off
+          isLogInPressed = false;
+        });
+
         if (isNewUser) {
           _firebaseRepository.addDataToDb(user).then(
             (value) {

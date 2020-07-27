@@ -4,7 +4,7 @@ import 'file:///D:/Projects/flutter_skype_clone/lib/utils/utilities.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_skype_clone/models/user.dart';
 
-class FirebaseRepository {
+class FirebaseMethod {
   final _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore _firestore = Firestore.instance;
@@ -71,5 +71,13 @@ class FirebaseRepository {
         .collection("users")
         .document(currentUser.uid)
         .setData(user.toMap(user)); // writing data to the database
+  }
+
+  Future<void> signOut() async {
+    _googleSignIn.disconnect(); //disconnect their Google account from this app
+    print("disconnecting from google");
+    _googleSignIn.signOut(); // code clears which account is connected here
+    print("SIgning out");
+    _auth.signOut(); // signout from FirebaseAuth as well
   }
 }
