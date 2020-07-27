@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_skype_clone/ui/screens/page_views/chat_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -33,9 +34,19 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.black38,
       body: PageView(
         children: <Widget>[
-          Center(child: Text(" A mere screen 1", style: TextStyle(color: Colors.white,))),
-          Center(child: Text(" A mere screen 2", style: TextStyle(color: Colors.white,))),
-          Center(child: Text(" A mere screen 3", style: TextStyle(color: Colors.white,))),
+          Container(
+            child: ChatListScreen(),
+          ),
+          Center(
+              child: Text(" A mere screen 2",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ))),
+          Center(
+              child: Text(" A mere screen 3",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ))),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
