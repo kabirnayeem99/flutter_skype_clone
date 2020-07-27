@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'file:///D:/Projects/flutter_skype_clone/lib/utils/utilities.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import 'firebase_repository.dart';
+import 'package:flutter_skype_clone/models/user.dart';
 
 class FirebaseRepository {
   final _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore _firestore = Firestore.instance;
+  User user = User();
+  Utilities utilities = Utilities();
 
   Future<FirebaseUser> getCurrentUser() async {
     /*
@@ -30,9 +32,8 @@ class FirebaseRepository {
       idToken: _signInAuthentication.idToken,
       accessToken: _signInAuthentication.accessToken,
     );
-    FirebaseUser user = (await _auth.signInWithCredential(credential))
-        as FirebaseUser; // to sign in the user
-    return user;
+    AuthResult result = await _auth.signInWithCredential(credential); // to sign in the user
+    return result.user;
   }
 
   Future<bool> authenticateUser(FirebaseUser user) async {
@@ -50,5 +51,25 @@ class FirebaseRepository {
     final List<DocumentSnapshot> docs = result.documents;
 
     return docs.length == 0 ? true : false;
+  }
+
+  Future<void> addDataToDb(FirebaseUser currentUser) async {
+    /* This will access the gmail account of the user and will the collect the 
+    data and will write it to a map and the map will be saved to the unique
+    uid(documents) of the user while isolated. */
+    user = User(
+      uid: currentUser.uid,
+      name: currentUser.displayName,
+      username: Utilities.getUsername(
+        currentUser.uid,
+        currentUser.email,
+      ),
+      email: currentUser.email,
+      profilePhoto: currentUser.photoUrl,
+    ); // making user model by 
+    _firestore
+        .collection("users")
+        .document(currentUser.uid)
+        .setData(user.toMap(user)); // writing data to the database
   }
 }
