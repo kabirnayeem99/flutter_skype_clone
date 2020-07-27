@@ -52,47 +52,55 @@ class _HomeScreenState extends State<HomeScreen> {
         onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: Container(
+        color: Colors.black12,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0),
+
+          padding: EdgeInsets.symmetric(vertical: 20.0),
           child: CupertinoTabBar(
-            backgroundColor: Colors.black26,
+            backgroundColor: Colors.black12,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.chat,
+                  Icons.chat_bubble_outline,
                   color: (_page == 0) ? Colors.purpleAccent : Colors.white12,
+                  size: (_page == 0) ? 25.0 : 20.0,
                 ),
                 title: Text(
                   "Chat",
                   style: TextStyle(
                     fontSize: 10.0,
                     color: (_page == 0) ? Colors.purpleAccent : Colors.white12,
+
                   ),
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.call,
-                  color: (_page == 1) ? Colors.purpleAccent : Colors.white12,
+                  color: (_page == 1) ? Colors.deepPurple : Colors.white,
+                  size: (_page == 0) ? 25.0 : 20.0,
+
                 ),
                 title: Text(
                   "Call",
                   style: TextStyle(
                     fontSize: 10.0,
-                    color: (_page == 1) ? Colors.purpleAccent : Colors.white12,
+                    color: (_page == 1) ? Colors.deepPurple : Colors.white,
                   ),
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.contacts,
-                  color: (_page == 2) ? Colors.purpleAccent : Colors.white12,
+                  Icons.import_contacts,
+                  color: (_page == 2) ? Colors.deepPurple : Colors.white,
+                  size: (_page == 0) ? 25.0 : 20.0,
+
                 ),
                 title: Text(
                   "Contact",
                   style: TextStyle(
                     fontSize: 10.0,
-                    color: (_page == 2) ? Colors.purpleAccent : Colors.white12,
+                    color: (_page == 2) ? Colors.deepPurple : Colors.white,
                   ),
                 ),
               ),
