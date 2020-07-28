@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class UniversalVariables {
   static final Color redColor = Color(0xffCE796B);
-  static final Color blackColor = Color(0xff07000c);
+  static final Color blackColor = Color(0xff0a000a);
   static final Color greyColor = Color(0xff495867);
   static final Color userCircleBackground = Color(0xff2b2b33);
   static final Color onlineDotColor = Color(0xff46dc64);

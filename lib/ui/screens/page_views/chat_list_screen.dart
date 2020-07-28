@@ -150,7 +150,7 @@ class UserCircle extends StatelessWidget {
       width: 30.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50.0),
-        color: Colors.deepPurple,
+        color: UniversalVariables.blackColor,
       ),
       child: Stack(
         children: <Widget>[

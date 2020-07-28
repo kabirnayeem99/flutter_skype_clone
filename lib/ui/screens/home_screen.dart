@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skype_clone/ui/screens/page_views/chat_list_screen.dart';
-import 'package:flutter_skype_clone/utils/universal_var.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: UniversalVariables.blackColor,//UniversalVariables.blackColor,
+      //UniversalVariables.blackColor,
       body: PageView(
         children: <Widget>[
           Container(
@@ -53,57 +52,53 @@ class _HomeScreenState extends State<HomeScreen> {
         onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: Container(
-        color: Colors.black12,
+        color: Colors.deepPurple,
         child: Padding(
-
-          padding: EdgeInsets.symmetric(vertical: 20.0),
+          // padding: EdgeInsets.symmetric(vertical: 10.0),
           child: CupertinoTabBar(
-            backgroundColor: Colors.black12,
+            backgroundColor: Colors.deepPurple,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.chat_bubble_outline,
-                  color: (_page == 0) ? Colors.purpleAccent : Colors.white12,
-                  size: (_page == 0) ? 25.0 : 20.0,
+                  color: (_page == 0) ? Colors.white : Colors.purple,
+                  size: 30,
                 ),
-                title: Text(
-                  "Chat",
-                  style: TextStyle(
-                    fontSize: 10.0,
-                    color: (_page == 0) ? Colors.purpleAccent : Colors.white12,
-
-                  ),
-                ),
+                // title: Text(
+                //   "Chat",
+                //   style: TextStyle(
+                //     fontSize: 10.0,
+                //     color: (_page == 0) ? Colors.deepPurple : Colors.white,
+                //   ),
+                // ),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.call,
-                  color: (_page == 1) ? Colors.deepPurple : Colors.white,
-                  size: (_page == 0) ? 25.0 : 20.0,
-
+                  color: (_page == 1) ? Colors.white : Colors.purple,
+                  size: 30,
                 ),
-                title: Text(
-                  "Call",
-                  style: TextStyle(
-                    fontSize: 10.0,
-                    color: (_page == 1) ? Colors.deepPurple : Colors.white,
-                  ),
-                ),
+                // title: Text(
+                //   "Call",
+                //   style: TextStyle(
+                //     fontSize: 10.0,
+                //     color: (_page == 1) ? Colors.deepPurple : Colors.white,
+                //   ),
+                // ),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.import_contacts,
-                  color: (_page == 2) ? Colors.deepPurple : Colors.white,
-                  size: (_page == 0) ? 25.0 : 20.0,
-
+                  color: (_page == 2) ? Colors.white : Colors.purple,
+                  size: 30.0,
                 ),
-                title: Text(
-                  "Contact",
-                  style: TextStyle(
-                    fontSize: 10.0,
-                    color: (_page == 2) ? Colors.deepPurple : Colors.white,
-                  ),
-                ),
+                // title: Text(
+                //   "Contact",
+                //   style: TextStyle(
+                //     fontSize: 10.0,
+                //     color: (_page == 2) ? Colors.deepPurple : Colors.white,
+                //   ),
+                // ),
               ),
             ],
             onTap: navigationTapped,

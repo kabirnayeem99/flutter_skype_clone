@@ -19,26 +19,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: Colors.black38,
+        color: Colors.deepPurple,
         border: Border(
           bottom: BorderSide(
             color: Colors.deepPurple,
-            width: 1.4,
+            width: 1.5,
             style: BorderStyle.solid,
           ),
         ),
       ),
       child: AppBar(
-        backgroundColor: Colors.black38,
-        elevation: 5.0,
+        backgroundColor: Colors.deepPurple,
+        elevation: 0,
         leading: leading,
         actions: actions,
         centerTitle: centerTitle,
         title: title,
       ),
     );
-
   }
-  final Size preferredSize = const Size.fromHeight(kToolbarHeight);
 
+  final Size preferredSize = const Size.fromHeight(kToolbarHeight);
 }
