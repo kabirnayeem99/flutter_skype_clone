@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skype_clone/resources/firebase_method.dart';
+import 'package:flutter_skype_clone/utils/universal_var.dart';
 import 'file:///D:/Projects/flutter_skype_clone/lib/ui/screens/home_screen.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -28,20 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
               : Container(),
         ],
       ),
-      backgroundColor: Colors.black38,
+      backgroundColor: UniversalVariables.blackColor,
     );
   }
 
   Widget loginButton() {
     return Shimmer.fromColors(
       baseColor: Colors.white60,
-      highlightColor: Colors.black38,
+      highlightColor: UniversalVariables.blackColor,
       child: FlatButton(
         padding: EdgeInsets.all(20.0),
         child: Text(
           "LogIn",
           style: TextStyle(
-            color: Colors.black38,
+            color: UniversalVariables.blackColor,
             fontWeight: FontWeight.w900,
             letterSpacing: 0.1,
             wordSpacing: .01,

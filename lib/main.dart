@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_skype_clone/resources/firebase_method.dart';
 import 'file:///D:/Projects/flutter_skype_clone/lib/ui/screens/home_screen.dart';
 import 'file:///D:/Projects/flutter_skype_clone/lib/ui/screens/login_screen.dart';
+import 'package:flutter_skype_clone/ui/screens/page_views/search_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +19,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "FluSkipe",
       debugShowCheckedModeBanner: false,
+      initialRoute: "/",
+      routes: {
+        "/search_screen": (context) => SearchScreen(),
+      },
       home: FutureBuilder(
         future: _firebaseRepository.getCurrentUser(),
         builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {

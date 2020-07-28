@@ -64,7 +64,6 @@ class FirebaseMethod {
       uid: currentUser.uid,
       name: currentUser.displayName,
       username: Utilities.getUsername(
-        currentUser.uid,
         currentUser.email,
       ),
       email: currentUser.email,

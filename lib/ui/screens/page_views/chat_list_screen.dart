@@ -33,7 +33,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
         IconButton(
           icon: Icon(Icons.search),
           iconSize: 20.0,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              "/search_screen",
+            );
+          },
         ),
         IconButton(
           icon: Icon(Icons.more_vert),
@@ -59,7 +64,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: UniversalVariables.blackColor,
       appBar: customAppBar(context),
       floatingActionButton: NewChatButton(),
       body: ChatListContainer(currentUserId: currentUserId),
@@ -167,7 +172,6 @@ class UserCircle extends StatelessWidget {
               width: 10.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-
                 color: Colors.lightGreenAccent,
               ),
 //              color: Colors.lightGreenAccent,

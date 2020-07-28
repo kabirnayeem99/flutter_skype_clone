@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skype_clone/ui/screens/page_views/chat_list_screen.dart';
+import 'package:flutter_skype_clone/utils/universal_var.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: UniversalVariables.blackColor,//UniversalVariables.blackColor,
       body: PageView(
         children: <Widget>[
           Container(
