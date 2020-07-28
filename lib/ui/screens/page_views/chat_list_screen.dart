@@ -128,7 +128,7 @@ class _ChatListContainerState extends State<ChatListContainer> {
           subtitle: Text(
             "Hi, how are you?",
             style: TextStyle(
-              color: Colors.white60,
+              color: Colors.white70,
               fontSize: 14.0,
               fontWeight: FontWeight.bold,
             ),
@@ -186,19 +186,28 @@ class UserCircle extends StatelessWidget {
 class NewChatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40.0,
-      width: 40.0,
-      decoration: BoxDecoration(
-        gradient: UniversalVariables.fabGradient,
-        borderRadius: BorderRadius.circular(50.0),
-      ),
+    return FloatingActionButton(
+      elevation: 5.0,
+      onPressed: () {},
+      backgroundColor: Colors.deepPurpleAccent,
       child: Icon(
         Icons.chat_bubble,
-        color: Colors.white,
-        size: 20.0,
+        size: 28.0,
       ),
-      padding: EdgeInsets.all(5.0),
     );
+//      Container(
+//      height: 50.0,
+//      width: 50.0,
+//      decoration: BoxDecoration(
+//        gradient: UniversalVariables.fabGradient,
+//        borderRadius: BorderRadius.circular(80.0),
+//      ),
+//      child: Icon(
+//        Icons.chat_bubble,
+//        color: Colors.white,
+//        size: 28.0,
+//      ),
+//      padding: EdgeInsets.all(5.0),
+//    );
   }
 }

@@ -53,57 +53,35 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: Container(
         color: Colors.deepPurple,
-        child: Padding(
-          // padding: EdgeInsets.symmetric(vertical: 10.0),
-          child: CupertinoTabBar(
-            backgroundColor: Colors.deepPurple,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.chat_bubble_outline,
-                  color: (_page == 0) ? Colors.white : Colors.purple,
-                  size: 30,
-                ),
-                // title: Text(
-                //   "Chat",
-                //   style: TextStyle(
-                //     fontSize: 10.0,
-                //     color: (_page == 0) ? Colors.deepPurple : Colors.white,
-                //   ),
-                // ),
+        child: CupertinoTabBar(
+
+          backgroundColor: Colors.deepPurple,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.chat_bubble_outline,
+                color: (_page == 0) ? Colors.white : Colors.white38,
+                size: 28,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.call,
-                  color: (_page == 1) ? Colors.white : Colors.purple,
-                  size: 30,
-                ),
-                // title: Text(
-                //   "Call",
-                //   style: TextStyle(
-                //     fontSize: 10.0,
-                //     color: (_page == 1) ? Colors.deepPurple : Colors.white,
-                //   ),
-                // ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.call,
+                color: (_page == 1) ? Colors.white : Colors.white38,
+                size: 28,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.import_contacts,
-                  color: (_page == 2) ? Colors.white : Colors.purple,
-                  size: 30.0,
-                ),
-                // title: Text(
-                //   "Contact",
-                //   style: TextStyle(
-                //     fontSize: 10.0,
-                //     color: (_page == 2) ? Colors.deepPurple : Colors.white,
-                //   ),
-                // ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.import_contacts,
+                color: (_page == 2) ? Colors.white : Colors.white38,
+                size: 28.0,
               ),
-            ],
-            onTap: navigationTapped,
-            currentIndex: _page,
-          ),
+
+            ),
+          ],
+          onTap: navigationTapped,
+          currentIndex: _page,
         ),
       ),
     );
