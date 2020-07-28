@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'file:///D:/Projects/flutter_skype_clone/lib/utils/utilities.dart';
@@ -32,7 +34,8 @@ class FirebaseMethod {
       idToken: _signInAuthentication.idToken,
       accessToken: _signInAuthentication.accessToken,
     );
-    AuthResult result = await _auth.signInWithCredential(credential); // to sign in the user
+    AuthResult result =
+        await _auth.signInWithCredential(credential); // to sign in the user
     return result.user;
   }
 
@@ -66,7 +69,7 @@ class FirebaseMethod {
       ),
       email: currentUser.email,
       profilePhoto: currentUser.photoUrl,
-    ); // making user model by 
+    ); // making user model by
     _firestore
         .collection("users")
         .document(currentUser.uid)
@@ -79,5 +82,25 @@ class FirebaseMethod {
     _googleSignIn.signOut(); // code clears which account is connected here
     print("SIgning out");
     _auth.signOut(); // signout from FirebaseAuth as well
+  }
+
+  Future<List<User>> fethUserList(FirebaseUser currentUser) async {
+    /* 
+    This method will create a user list from the document snapshot. But before
+    doing so, it will check so that the current user is not included by 
+    excluding his documentId. 
+     */
+    List<User> userList = [];
+    QuerySnapshot querySnapshot =
+        await _firestore.collection("users").getDocuments();
+
+    for (DocumentSnapshot eachSnapshot in querySnapshot.documents) {
+      if (eachSnapshot.documentID != currentUser.uid) {
+        // retrieve the user model and embed it into a map.
+        userList.add(User.fromMap(eachSnapshot.data));
+      }
+    }
+
+    return userList;
   }
 }
