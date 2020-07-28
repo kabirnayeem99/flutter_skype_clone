@@ -49,7 +49,7 @@ class CustomTile extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(
                       width: 0.5,
-                      color: Colors.deepPurple,
+                      color: Colors.black12,
                     ),
                   ),
                 ),

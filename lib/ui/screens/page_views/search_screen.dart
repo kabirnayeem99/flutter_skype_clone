@@ -4,7 +4,6 @@ import 'package:flutter_skype_clone/models/user.dart';
 import 'package:flutter_skype_clone/resources/firebase_repository.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
 import 'package:flutter_skype_clone/utils/universal_var.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -36,15 +35,15 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   searchAppBar(BuildContext context) {
-    return GradientAppBar(
-      gradient: LinearGradient(colors: [Colors.blueGrey, Colors.blue]),
+    return AppBar(
+      backgroundColor: Colors.deepPurpleAccent,
       leading: IconButton(
         icon: Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
       elevation: 0,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight + 20),
+        preferredSize: const Size.fromHeight(kToolbarHeight + 0),
         child: Padding(
           padding: EdgeInsets.only(left: 20),
           child: TextField(

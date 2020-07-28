@@ -23,7 +23,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         icon: Icon(
           Icons.notifications,
           color: Colors.white,
-          size: 20.0,
+          size: 26.0,
         ),
         onPressed: () {},
       ),
@@ -32,7 +32,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
-          iconSize: 20.0,
+          iconSize: 26.0,
           onPressed: () {
             Navigator.pushNamed(
               context,
@@ -42,7 +42,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
         IconButton(
           icon: Icon(Icons.more_vert),
-          iconSize: 20.0,
+          iconSize: 26.0,
           onPressed: () {},
         ),
       ],
@@ -146,8 +146,8 @@ class UserCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30.0,
-      width: 30.0,
+      height: 35.0,
+      width: 35.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50.0),
         color: UniversalVariables.blackColor,
@@ -161,7 +161,7 @@ class UserCircle extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
-                fontSize: 13.0,
+                fontSize: 14.0,
               ),
             ),
           ),

@@ -52,12 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
         onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: Container(
+        height: 48,
+
         color: Colors.deepPurple,
         child: CupertinoTabBar(
+
 
           backgroundColor: Colors.deepPurple,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
+
               icon: Icon(
                 Icons.chat_bubble_outline,
                 color: (_page == 0) ? Colors.white : Colors.white38,
