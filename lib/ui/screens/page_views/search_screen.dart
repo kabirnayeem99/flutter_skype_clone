@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_skype_clone/models/user.dart';
 import 'package:flutter_skype_clone/resources/firebase_repository.dart';
+import 'package:flutter_skype_clone/ui/screens/chatscreens/chat_screen.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
 import 'package:flutter_skype_clone/utils/universal_var.dart';
 
@@ -13,7 +14,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   FirebaseRepository _repository = FirebaseRepository();
 
-  List<User> userList =[];
+  List<User> userList = [];
   String query = "";
   TextEditingController searchController = TextEditingController();
 
@@ -64,8 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
               suffixIcon: IconButton(
                 icon: Icon(Icons.close, color: Colors.white),
                 onPressed: () {
-                  WidgetsBinding.instance
-                      .addPostFrameCallback((_) => searchController.clear());
+                  searchController.clear();
                 },
               ),
               border: InputBorder.none,
@@ -109,7 +109,20 @@ class _SearchScreenState extends State<SearchScreen> {
 
         return CustomTile(
           mini: false,
-          onTap: () {},
+          onTap: () {
+            print("${searchedUser.name} is pressed");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatScreen(
+                  reciever: searchedUser,
+
+                ),
+              ),
+            );
+
+            print("Search click done");
+          },
           leading: CircleAvatar(
             backgroundImage: NetworkImage(searchedUser.profilePhoto),
             backgroundColor: Colors.grey,

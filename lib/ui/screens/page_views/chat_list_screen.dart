@@ -193,6 +193,7 @@ class NewChatButton extends StatelessWidget {
       child: Icon(
         Icons.chat_bubble,
         size: 28.0,
+        color: Colors.white,
       ),
     );
 //      Container(
