@@ -20,6 +20,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.dark,
+        accentColor: Colors.deepPurple,
       ),
       title: "FluSkipe",
       debugShowCheckedModeBanner: false,

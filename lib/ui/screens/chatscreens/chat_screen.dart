@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_skype_clone/models/message.dart';
 import 'package:flutter_skype_clone/models/user.dart';
+import 'package:flutter_skype_clone/resources/firebase_repository.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_app_bar.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
 import 'package:flutter_skype_clone/utils/universal_var.dart';
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen({this.reciever});
+  ChatScreen({this.reciever}); // get the id from the search
 
   final User reciever;
 
@@ -17,6 +20,31 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController messageEditingController = TextEditingController();
   bool isWriting = false;
+  User sender;
+  String _currentUserId;
+  FirebaseRepository _firebaseRepository = FirebaseRepository();
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseRepository.getCurrentUser().then((user) {
+      /*
+      will get the current user and using the user model
+      it will create a user object named sender, which will be assigned the user
+      id of current user.
+       */
+      _currentUserId = user.uid; // getting the user id of current user
+
+      setState(() {
+        sender = User(
+          // creating a user model named sender based on current user
+          uid: _currentUserId,
+          name: user.displayName,
+          profilePhoto: user.photoUrl,
+        );
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,26 +62,75 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  sendMessage() {
+    var text = messageEditingController.text; // to get the recent text
+
+    Message _message = Message(
+      recieverId: widget.reciever.uid,
+      senderId: sender.uid,
+      message: text,
+      type: "text",
+      timeStamp: FieldValue.serverTimestamp(),
+    );
+
+    setState(() {
+      // after hitting the send button the send button should disappear
+      isWriting = false;
+    });
+
+    _firebaseRepository.addMessageToDb(_message, sender, widget.reciever);
+  }
+
   Widget messageList() {
-    return ListView.builder(
-      padding: EdgeInsets.all(10.0),
-      itemCount: 18,
-      itemBuilder: (context, index) {
-        return chatMessageItem();
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection("messages")
+          .document(_currentUserId)
+          .collection(widget.reciever.uid)
+          .orderBy("timeStamp", descending: true)
+          .snapshots(), // getting the snapshot of the data in real time
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return ListView.builder(
+          padding: EdgeInsets.all(10.0),
+          itemBuilder: (context, index) {
+            // check every message by index and give it to chatmessageitem
+            // to build a bubble
+            return chatMessageItem(snapshot.data.documents[index]);
+          },
+          itemCount: snapshot.data.documents.length,
+        );
       },
     );
   }
 
-  Widget chatMessageItem() {
+  Widget chatMessageItem(DocumentSnapshot snapshot) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
       child: Container(
-        child: recieverLayOut(),
+        alignment: snapshot["senderId"] == _currentUserId
+            ? Alignment.bottomRight
+            : Alignment.centerLeft,
+        child: snapshot["senderId"] == _currentUserId
+            ? senderLayOut(snapshot)
+            : recieverLayOut(snapshot),
       ),
     );
   }
 
-  Widget senderLayOut() {
+  getMessage(DocumentSnapshot snapshot) {
+    return Text(
+      snapshot["message"],
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+      ),
+    );
+  }
+
+  Widget senderLayOut(DocumentSnapshot snapshot) {
     Radius messageRadius = Radius.circular(20.0);
 
     return Container(
@@ -72,43 +149,33 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: Text(
-          "Who are you?",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
+        child: getMessage(snapshot),
       ),
     );
   }
 
-  Widget recieverLayOut() {
+  Widget recieverLayOut(DocumentSnapshot snapshot) {
     Radius messageRadius = Radius.circular(20.0);
 
     return Container(
-        margin: EdgeInsets.only(top: 10),
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.65,
-          minWidth: MediaQuery.of(context).size.width * 0.10,
+      margin: EdgeInsets.only(top: 10),
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width * 0.65,
+        minWidth: MediaQuery.of(context).size.width * 0.10,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.deepPurpleAccent,
+        borderRadius: BorderRadius.only(
+          topLeft: messageRadius,
+          topRight: messageRadius,
+          bottomLeft: messageRadius,
         ),
-        decoration: BoxDecoration(
-          color: Colors.deepPurpleAccent,
-          borderRadius: BorderRadius.only(
-            topLeft: messageRadius,
-            topRight: messageRadius,
-            bottomLeft: messageRadius,
-          ),
-        ),
-        child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              "Hi?",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.0,
-              ),
-            )));
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: getMessage(snapshot),
+      ),
+    );
   }
 
   Widget chatControlls() {
@@ -265,7 +332,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         Icons.send,
                         size: 20.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        sendMessage();
+                      },
                     ),
                   ),
                 )
