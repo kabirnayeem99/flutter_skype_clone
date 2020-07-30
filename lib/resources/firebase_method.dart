@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_skype_clone/constants/strings.dart';
 import 'package:flutter_skype_clone/models/message.dart';
 import 'file:///D:/Projects/flutter_skype_clone/lib/utils/utilities.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -48,8 +49,8 @@ class FirebaseMethod {
     he will be directly signed in.
      */
     QuerySnapshot result = await _firestore
-        .collection("users")
-        .where("email", isEqualTo: user.email)
+        .collection(sUserCollection)
+        .where(sEmailField, isEqualTo: user.email)
         .getDocuments();
 
     final List<DocumentSnapshot> docs = result.documents;
@@ -71,7 +72,7 @@ class FirebaseMethod {
       profilePhoto: currentUser.photoUrl,
     ); // making user model by
     _firestore
-        .collection("users")
+        .collection(sUserCollection)
         .document(currentUser.uid)
         .setData(user.toMap(user)); // writing data to the database
   }
@@ -79,13 +80,13 @@ class FirebaseMethod {
   Future<void> addMessageToDb(Message message, User sender, User reciever) async {
     var map  = message.toMap();
     await _firestore
-        .collection("messages")
+        .collection(sMessagesCollection)
         .document(message.senderId)
         .collection(message.recieverId)
         .add(map);
 
     return _firestore
-        .collection("messages")
+        .collection(sMessagesCollection)
         .document(message.recieverId)
         .collection(message.senderId)
         .add(map);
@@ -107,7 +108,7 @@ class FirebaseMethod {
      */
     List<User> userList = [];
     QuerySnapshot querySnapshot =
-        await _firestore.collection("users").getDocuments();
+        await _firestore.collection(sUserCollection).getDocuments();
 
     for (DocumentSnapshot eachSnapshot in querySnapshot.documents) {
       if (eachSnapshot.documentID != currentUser.uid) {

@@ -7,6 +7,7 @@ import 'package:flutter_skype_clone/resources/firebase_repository.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_app_bar.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
 import 'package:flutter_skype_clone/utils/universal_var.dart';
+import 'package:flutter_skype_clone/constants/strings.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({this.reciever}); // get the id from the search
@@ -69,8 +70,8 @@ class _ChatScreenState extends State<ChatScreen> {
       recieverId: widget.reciever.uid,
       senderId: sender.uid,
       message: text,
-      type: "text",
-      timeStamp: FieldValue.serverTimestamp(),
+      type: sTextType,
+      timeStamp: Timestamp.now(),
     );
 
     setState(() {
@@ -78,16 +79,18 @@ class _ChatScreenState extends State<ChatScreen> {
       isWriting = false;
     });
 
+    messageEditingController.text = ""; // clears the text box
+
     _firebaseRepository.addMessageToDb(_message, sender, widget.reciever);
   }
 
   Widget messageList() {
     return StreamBuilder(
       stream: Firestore.instance
-          .collection("messages")
+          .collection(sMessagesCollection)
           .document(_currentUserId)
           .collection(widget.reciever.uid)
-          .orderBy("timeStamp", descending: true)
+          .orderBy(sTimeStampOrder, descending: false)
           .snapshots(), // getting the snapshot of the data in real time
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
@@ -107,22 +110,25 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget chatMessageItem(DocumentSnapshot snapshot) {
+    
+    Message _message = Message.fromMap(snapshot.data);
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
       child: Container(
-        alignment: snapshot["senderId"] == _currentUserId
+        alignment: _message.senderId == _currentUserId
             ? Alignment.bottomRight
             : Alignment.centerLeft,
-        child: snapshot["senderId"] == _currentUserId
-            ? senderLayOut(snapshot)
-            : recieverLayOut(snapshot),
+        child: _message.senderId == _currentUserId
+            ? senderLayOut(_message)
+            : recieverLayOut(_message),
       ),
     );
   }
 
-  getMessage(DocumentSnapshot snapshot) {
+  getMessage(Message message) {
     return Text(
-      snapshot["message"],
+      message.message,
       style: TextStyle(
         color: Colors.white,
         fontSize: 16.0,
@@ -130,14 +136,13 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget senderLayOut(DocumentSnapshot snapshot) {
+  Widget senderLayOut(Message message) {
     Radius messageRadius = Radius.circular(20.0);
 
     return Container(
-      width: 60,
       margin: EdgeInsets.only(top: 10),
       constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * .5,
+        maxWidth: MediaQuery.of(context).size.width * .65,
       ),
       decoration: BoxDecoration(
         color: Colors.deepPurple,
@@ -149,19 +154,18 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: getMessage(snapshot),
+        child: getMessage(message),
       ),
     );
   }
 
-  Widget recieverLayOut(DocumentSnapshot snapshot) {
+  Widget recieverLayOut(Message message) {
     Radius messageRadius = Radius.circular(20.0);
 
     return Container(
       margin: EdgeInsets.only(top: 10),
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width * 0.65,
-        minWidth: MediaQuery.of(context).size.width * 0.10,
       ),
       decoration: BoxDecoration(
         color: Colors.deepPurpleAccent,
@@ -173,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: getMessage(snapshot),
+        child: getMessage(message),
       ),
     );
   }
