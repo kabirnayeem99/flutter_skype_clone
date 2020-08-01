@@ -4,8 +4,10 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_skype_clone/enum/view_stat.dart';
 import 'package:flutter_skype_clone/models/message.dart';
 import 'package:flutter_skype_clone/models/user.dart';
+import 'package:flutter_skype_clone/provider/image_upload_provider.dart';
 import 'package:flutter_skype_clone/resources/firebase_repository.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_app_bar.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_skype_clone/utils/universal_var.dart';
 import 'package:flutter_skype_clone/constants/strings.dart';
 import 'package:flutter_skype_clone/utils/utilities.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({this.reciever}); // get the id from the search
@@ -32,6 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
   FirebaseRepository _firebaseRepository = FirebaseRepository();
   ScrollController _listScroolController = ScrollController();
   FocusNode messageFocusNode = FocusNode();
+  ImageUploadProvider _imageUploadProvider;
 
   @override
   void initState() {
@@ -57,15 +61,30 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _imageUploadProvider = Provider.of<ImageUploadProvider>(context);
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       backgroundColor: UniversalVariables.blackColor,
       appBar: customAppBar(context),
       body: Column(
         children: <Widget>[
+          RaisedButton(
+            color: Colors.deepPurpleAccent,
+            child: Text("Change View State"),
+            onPressed: () {
+              print("Button Pressed");
+              _imageUploadProvider.getViewState == ViewState.LOADING
+                  ? _imageUploadProvider.setToIdle()
+                  : _imageUploadProvider.setToLoading();
+              print(_imageUploadProvider.getViewState);
+            },
+          ),
           Flexible(
             child: messageList(),
           ),
+          _imageUploadProvider.getViewState == ViewState.LOADING
+              ? CircularProgressIndicator()
+              : Container(),
           chatControlls(),
           showEmojiPicker
               ? Container(
