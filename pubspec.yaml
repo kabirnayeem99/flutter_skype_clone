@@ -28,12 +28,20 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
-  cloud_firestore: ^0.13.7 
+  cloud_firestore: ^0.13.7
+  # Cross-platform API to request permissions and check their status.
   permission_handler: ^5.0.1+1
   firebase_auth: ^0.16.1
   google_sign_in: ^4.5.1
+  # To add shimmer effect
   shimmer: ^1.1.1
   emoji_picker: ^0.1.0
+  # For picking images from the image library,
+  # And taking new pictures with the camera
+  image_picker: ^0.6.7+4
+  # For finding commonly used locations on the filesystem
+  path_provider: ^1.6.11
+  firebase_storage: ^3.1.6
 
 dev_dependencies:
   flutter_test:

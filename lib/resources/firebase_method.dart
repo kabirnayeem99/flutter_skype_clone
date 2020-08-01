@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_skype_clone/constants/strings.dart';
 import 'package:flutter_skype_clone/models/message.dart';
-import 'file:///D:/Projects/flutter_skype_clone/lib/utils/utilities.dart';
+import 'package:flutter_skype_clone/utils/utilities.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_skype_clone/models/user.dart';
 
@@ -13,7 +15,8 @@ class FirebaseMethod {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore _firestore = Firestore.instance;
   User user = User();
-  Utilities utilities = Utilities();
+  Utils utilities = Utils();
+  StorageReference _storageReference;
 
   Future<FirebaseUser> getCurrentUser() async {
     /*
@@ -65,7 +68,7 @@ class FirebaseMethod {
     user = User(
       uid: currentUser.uid,
       name: currentUser.displayName,
-      username: Utilities.getUsername(
+      username: Utils.getUsername(
         currentUser.email,
       ),
       email: currentUser.email,
@@ -77,8 +80,9 @@ class FirebaseMethod {
         .setData(user.toMap(user)); // writing data to the database
   }
 
-  Future<void> addMessageToDb(Message message, User sender, User reciever) async {
-    var map  = message.toMap();
+  Future<void> addMessageToDb(
+      Message message, User sender, User reciever) async {
+    var map = message.toMap();
     await _firestore
         .collection(sMessagesCollection)
         .document(message.senderId)
@@ -101,10 +105,10 @@ class FirebaseMethod {
   }
 
   Future<List<User>> fethUserList(FirebaseUser currentUser) async {
-    /* 
+    /*
     This method will create a user list from the document snapshot. But before
-    doing so, it will check so that the current user is not included by 
-    excluding his documentId. 
+    doing so, it will check so that the current user is not included by
+    excluding his documentId.
      */
     List<User> userList = [];
     QuerySnapshot querySnapshot =
@@ -118,5 +122,58 @@ class FirebaseMethod {
     }
 
     return userList;
+  }
+
+  Future<String> uploadImageToStorage(File image) async {
+    try{
+      _storageReference = FirebaseStorage.instance
+          .ref()
+          .child(
+          '${DateTime.now().millisecondsSinceEpoch}'
+      );
+      StorageUploadTask _storageUploadTask = _storageReference.putFile(image);
+      var url = await (await _storageUploadTask.onComplete).ref.getDownloadURL();
+      return url;
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  Future<DocumentReference> setImageMessage(String url, String senderId, String recieverId) async {
+    Message _message;
+    _message = Message.imageMessage(
+      message: "IMAGE",
+      recieverId: recieverId,
+      senderId: senderId,
+      photoUrl: url,
+      timeStamp: Timestamp.now(),
+      type: "image",
+
+    );
+
+    var _map = _message.toImageMap();
+    await _firestore
+        .collection(sMessagesCollection)
+        .document(_message.senderId)
+        .collection(_message.recieverId)
+        .add(_map);
+
+    return _firestore
+        .collection(sMessagesCollection)
+        .document(_message.recieverId)
+        .collection(_message.senderId)
+        .add(_map);
+  }
+
+  void uploadImage(
+    File image,
+    String senderId,
+    String recieverId,
+  ) async {
+
+    String url = await uploadImageToStorage(image);
+    setImageMessage(url, senderId, recieverId);
+
   }
 }

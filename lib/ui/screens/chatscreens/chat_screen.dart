@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_skype_clone/ui/widgets/custom_app_bar.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
 import 'package:flutter_skype_clone/utils/universal_var.dart';
 import 'package:flutter_skype_clone/constants/strings.dart';
+import 'package:flutter_skype_clone/utils/utilities.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({this.reciever}); // get the id from the search
@@ -82,6 +85,8 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+
+
   showEmojiContainer() {
     setState(() {
       showEmojiPicker = true;
@@ -90,7 +95,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget emojiContainer() {
     return SingleChildScrollView(
-      
       child: ConstrainedBox(
         constraints: BoxConstraints(),
         child: EmojiPicker(
@@ -106,8 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
               isWriting = true;
             });
             messageEditingController.text =
-                messageEditingController.text
-                + emoji.emoji;
+                messageEditingController.text + emoji.emoji;
           },
         ),
       ),
@@ -314,6 +317,8 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     }
 
+
+
     return Container(
       padding: EdgeInsets.all(10.0),
       child: Row(
@@ -397,7 +402,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ? Container()
               : Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Icon(Icons.photo_camera),
+                  child: GestureDetector(
+                      onTap: () => pickImage(source: ImageSource.camera),
+                      child: Icon(Icons.photo_camera)),
                 ),
           isWriting ? Container() : Icon(Icons.mic),
           isWriting
@@ -425,6 +432,15 @@ class _ChatScreenState extends State<ChatScreen> {
               : Container(),
         ],
       ),
+    );
+  }
+
+  pickImage({ImageSource source}) async {
+    File selectedImage = await Utils.pickImage(source: source);
+    _firebaseRepository.uploadImage(
+      image: selectedImage,
+      senderId: _currentUserId,
+      recieverId: widget.reciever.uid,
     );
   }
 

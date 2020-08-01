@@ -56,7 +56,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       /* get the user id of the signed in user to get the chat lists*/
       setState(() {
         currentUserId = currentUser.uid;
-        initials = Utilities.getInitials(currentUser.displayName);
+        initials = Utils.getInitials(currentUser.displayName);
       });
     });
   }

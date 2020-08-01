@@ -39,6 +39,20 @@ class Message {
     return map;
   }
 
+  Map toImageMap() {
+    /*
+    Creating a map from an message object
+    turning each element into a map value
+     */
+    var map = Map<String, dynamic>();
+    map["senderId"] = this.senderId;
+    map["recieverId"] = this.recieverId;
+    map["type"] = this.type;
+    map["message"] = this.message;
+    map["timeStamp"] = this.timeStamp;
+    map["photoUrl"] = this.photoUrl;
+    return map;
+  }
   Message.fromMap(Map<String, dynamic> map) {
     /*
     turn the map into a messsage object.
