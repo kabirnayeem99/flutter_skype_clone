@@ -85,8 +85,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-
-
   showEmojiContainer() {
     setState(() {
       showEmojiPicker = true;
@@ -317,8 +315,6 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     }
 
-
-
     return Container(
       padding: EdgeInsets.all(10.0),
       child: Row(
@@ -402,11 +398,15 @@ class _ChatScreenState extends State<ChatScreen> {
               ? Container()
               : Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: GestureDetector(
-                      onTap: () => pickImage(source: ImageSource.camera),
-                      child: Icon(Icons.photo_camera)),
+                  child:
+                      GestureDetector(onTap: () => {}, child: Icon(Icons.mic)),
                 ),
-          isWriting ? Container() : Icon(Icons.mic),
+          isWriting
+              ? Container()
+              : GestureDetector(
+                  onTap: () => pickImage(source: ImageSource.camera,),
+                  child: Icon(Icons.camera_alt),
+                ),
           isWriting
               ? Container(
 //                  height: 30.0,
@@ -435,7 +435,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  pickImage({ImageSource source}) async {
+  pickImage({@required ImageSource source}) async {
+    print("camera button pressed");
     File selectedImage = await Utils.pickImage(source: source);
     _firebaseRepository.uploadImage(
       image: selectedImage,
