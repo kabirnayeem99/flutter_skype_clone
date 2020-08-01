@@ -19,12 +19,12 @@ class FirebaseRepository {
       _firebaseMethod.addMessageToDb(message, sender, reciever);
   void uploadImage({
     @required File image,
-    @required String senderId,
     @required String recieverId,
+    @required String senderId,
   }) =>
       _firebaseMethod.uploadImage(
         image,
-        senderId,
         recieverId,
+        senderId,
       );
 }

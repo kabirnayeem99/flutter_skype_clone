@@ -404,7 +404,9 @@ class _ChatScreenState extends State<ChatScreen> {
           isWriting
               ? Container()
               : GestureDetector(
-                  onTap: () => pickImage(source: ImageSource.camera,),
+                  onTap: () => pickImage(
+                    source: ImageSource.camera,
+                  ),
                   child: Icon(Icons.camera_alt),
                 ),
           isWriting
@@ -440,8 +442,8 @@ class _ChatScreenState extends State<ChatScreen> {
     File selectedImage = await Utils.pickImage(source: source);
     _firebaseRepository.uploadImage(
       image: selectedImage,
-      senderId: _currentUserId,
       recieverId: widget.reciever.uid,
+      senderId: _currentUserId,
     );
   }
 

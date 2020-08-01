@@ -125,22 +125,25 @@ class FirebaseMethod {
   }
 
   Future<String> uploadImageToStorage(File image) async {
-    try{
+    try {
       _storageReference = FirebaseStorage.instance
           .ref()
-          .child(
-          '${DateTime.now().millisecondsSinceEpoch}'
-      );
+          .child('${DateTime.now().millisecondsSinceEpoch}');
       StorageUploadTask _storageUploadTask = _storageReference.putFile(image);
-      var url = await (await _storageUploadTask.onComplete).ref.getDownloadURL();
+      var url =
+          await (await _storageUploadTask.onComplete).ref.getDownloadURL();
       return url;
-    }catch(e){
+    } catch (e) {
       print(e);
       return null;
     }
   }
 
-  Future<DocumentReference> setImageMessage(String url, String senderId, String recieverId) async {
+  Future<DocumentReference> setImageMessage(
+    String url,
+    String recieverId,
+    String senderId,
+  ) async {
     Message _message;
     _message = Message.imageMessage(
       message: "IMAGE",
@@ -149,7 +152,6 @@ class FirebaseMethod {
       photoUrl: url,
       timeStamp: Timestamp.now(),
       type: "image",
-
     );
 
     var _map = _message.toImageMap();
@@ -168,12 +170,14 @@ class FirebaseMethod {
 
   void uploadImage(
     File image,
-    String senderId,
     String recieverId,
+    String senderId,
   ) async {
-
     String url = await uploadImageToStorage(image);
-    setImageMessage(url, senderId, recieverId);
-
+    setImageMessage(
+      url,
+      recieverId,
+      senderId,
+    );
   }
 }
