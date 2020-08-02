@@ -9,6 +9,7 @@ import 'package:flutter_skype_clone/models/message.dart';
 import 'package:flutter_skype_clone/models/user.dart';
 import 'package:flutter_skype_clone/provider/image_upload_provider.dart';
 import 'package:flutter_skype_clone/resources/firebase_repository.dart';
+import 'package:flutter_skype_clone/ui/screens/chatscreens/widgets/cached_image.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_app_bar.dart';
 import 'package:flutter_skype_clone/ui/widgets/custom_tile.dart';
 import 'package:flutter_skype_clone/utils/universal_var.dart';
@@ -217,7 +218,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           )
         : message.photoUrl != null
-            ? Image.network(message.photoUrl)
+            ? CachTheImage(url: message.photoUrl)
             : Text("Image not found");
   }
 
