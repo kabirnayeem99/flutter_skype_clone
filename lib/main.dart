@@ -23,6 +23,7 @@ class _MyAppState extends State<MyApp> {
 
     return ChangeNotifierProvider<ImageUploadProvider>(
       create: (context) => ImageUploadProvider(),
+
       child: MaterialApp(
         theme: ThemeData(
           brightness: Brightness.dark,

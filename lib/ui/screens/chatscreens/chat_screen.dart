@@ -463,6 +463,7 @@ class _ChatScreenState extends State<ChatScreen> {
       image: selectedImage,
       recieverId: widget.reciever.uid,
       senderId: _currentUserId,
+      imageUploadProvider: _imageUploadProvider,
     );
   }
 
