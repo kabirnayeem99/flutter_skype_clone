@@ -1,5 +1,6 @@
 const String sMessagesCollection = "messages";
-const String sTextType = "text";
+const String sMessageTypeText = "text";
+const String sMessageTypeImage = "image";
 const String sTimeStampOrder = "timeStamp";
 const String sUserCollection = "users";
 const String sEmailField = "email";

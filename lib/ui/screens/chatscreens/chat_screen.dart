@@ -141,7 +141,7 @@ class _ChatScreenState extends State<ChatScreen> {
       recieverId: widget.reciever.uid,
       senderId: sender.uid,
       message: text,
-      type: sTextType,
+      type: sMessageTypeText,
       timeStamp: Timestamp.now(),
     );
 
@@ -208,13 +208,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   getMessage(Message message) {
-    return Text(
-      message.message,
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 16.0,
-      ),
-    );
+    return message.type == sMessageTypeText
+        ? Text(
+            message.message,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.0,
+            ),
+          )
+        : message.photoUrl != null
+            ? Image.network(message.photoUrl)
+            : Text("Image not found");
   }
 
   Widget senderLayOut(Message message) {
