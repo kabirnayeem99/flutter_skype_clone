@@ -314,6 +314,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       title: "Media",
                       subtitle: "Share your media.",
                       icon: Icons.photo,
+                      onTap: () => pickImage(source: ImageSource.gallery),
                     ),
                     ModalTile(
                       title: "File",
@@ -500,12 +501,14 @@ class ModalTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final IconData icon;
+  final Function onTap;
 
   const ModalTile({
     Key key,
     this.title,
     this.subtitle,
     this.icon,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -515,6 +518,7 @@ class ModalTile extends StatelessWidget {
         horizontal: 15.0,
       ),
       child: CustomTile(
+        onTap: onTap,
         subtitle: Text(
           subtitle,
           style: TextStyle(

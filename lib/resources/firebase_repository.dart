@@ -23,7 +23,6 @@ class FirebaseRepository {
     @required String recieverId,
     @required String senderId,
     @required ImageUploadProvider imageUploadProvider,
-
   }) =>
       _firebaseMethod.uploadImage(
         image,

@@ -8,12 +8,15 @@ class CachTheImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      // prevents its child from painting outside its bounds,
-      child: CachedNetworkImage(
-        imageUrl: url,
-        placeholder: (context, url) => Center(
-          child: CircularProgressIndicator(),
+    return SizedBox(
+      height: 200,
+      child: ClipRect(
+        // prevents its child from painting outside its bounds,
+        child: CachedNetworkImage(
+          imageUrl: url,
+          placeholder: (context, url) => Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       ),
     );
